@@ -17,5 +17,5 @@ $ docker run --rm \
     -e "ENV_FOR_SPECIFIC_TEST=(...)" \
     -v "/path/to/tests/dir:/spec" \
     -v "hub-production-monitoring-datavolume:/data" \
-    dms-monitoring
+    wise-team/dockerized-mocha-slack-service-monitoring
 ```
