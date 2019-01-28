@@ -30,9 +30,10 @@ if [ -z "${FAILURE_NOTIFICATION_INTERVAL_S}" ]; then
     exit 1
 fi
 
+NODE_VERSION="10.15"
 DATA_VOLUME="monitoring_${PROJECT_NAME}_data"
 CONTAINER_NAME="monitoring-${PROJECT_NAME}"
-IMAGE="node:10.15-slim"
+IMAGE="node:${NODE_VERSION}-slim"
 
 
 docker run --rm\
