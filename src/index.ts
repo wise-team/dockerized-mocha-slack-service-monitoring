@@ -19,7 +19,10 @@ ow(mentions, ow.string.label("Env SLACK_MENTIONS"));
 
 const failureNotificationIntervalS =
   process.env.FAILURE_NOTIFICATION_INTERVAL_S;
-ow(mentions, ow.string.nonEmpty.label("Env FAILURE_NOTIFICATION_INTERVAL_S"));
+ow(
+  failureNotificationIntervalS,
+  ow.string.nonEmpty.label("Env FAILURE_NOTIFICATION_INTERVAL_S")
+);
 
 // config
 const failureErrorTTLms =
@@ -27,11 +30,23 @@ const failureErrorTTLms =
 const testFiles: string[] = loadTestFilesFromDir("/spec");
 const failuresTTLFilePath = "/data/failuresttl.json";
 const failureLogMarker = "MONITORING_FAILURE_" + projectName;
+const projectDescriptor = projectName + ":" + environmentType;
 const logMetadata = {
   service: "monitoring",
   environment: environmentType,
   project: projectName
 };
+
+//
+
+process.on("unhandledRejection", error => {
+  log({
+    msg:
+      projectDescriptor + " monitoring failed with unhandled promise rejection",
+    error: error,
+    severity: "error"
+  });
+});
 
 //
 
@@ -43,11 +58,11 @@ const logMetadata = {
   if (failuresToNotify.length > 0) {
     await sendSlackNotification(failuresToNotify);
     log({
-      msg: projectName + " monitoring failed, slack notification sent",
+      msg: projectDescriptor + " monitoring failed, slack notification sent",
       severity: "info"
     });
   } else {
-    log({ msg: projectName + " monitoring done", severity: "info" });
+    log({ msg: projectDescriptor + " monitoring done", severity: "info" });
   }
   process.exit(process.exitCode);
 })();
@@ -165,7 +180,11 @@ async function sendSlackNotification(failures: [string, string][]) {
     return "[[[ " + failure[0] + " ]]]: " + failure[1] + "\n";
   });
   const slackText =
-    projectName + " monitofing failed " + mentions + ": " + failuresListedText;
+    projectDescriptor +
+    " monitofing failed " +
+    mentions +
+    ": " +
+    failuresListedText;
   const slackMessage = { text: slackText };
   try {
     const response = await Axios.post(slackWebhookUrl + "", slackMessage);
