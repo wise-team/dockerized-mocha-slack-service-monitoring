@@ -72,7 +72,7 @@ process.on("unhandledRejection", error => {
 function loadTestFilesFromDir(dir: string) {
   return fs
     .readdirSync(dir)
-    .filter(fName => fName.endsWith(".ts") || fName.endsWith(".js"))
+    .filter(fName => fName.endsWith(".spec.ts") || fName.endsWith(".spec.js"))
     .map(fName => path.resolve(dir, fName));
 }
 
