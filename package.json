@@ -1,0 +1,41 @@
+{
+  "name": "dockerized-mocha-slack-service-monitoring",
+  "version": "3.1.0",
+  "description": "Simple service monitoring tool that runs mocha tests and reports to slack. Run with docker container.",
+  "engines": {
+    "node": ">=10.15"
+  },
+  "scripts": {
+    "monitor": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "lodash": "^4.17.11",
+    "ow": "^0.8.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.117",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.11.0",
+    "mocha": "^5.2.0",
+    "ts-node": "^6.2.0",
+    "tslint": "^5.11.0",
+    "typescript": "^2.9.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wise-team/dockerized-mocha-slack-service-monitoring"
+  },
+  "keywords": [
+    "monitoring"
+  ],
+  "author": "The Wise Team (https://wise-team.io/)",
+  "contributors": [
+    "Jędrzej Lewandowski <jedrzejblew@gmail.com> (https://jedrzej.lewandowski.doctor/)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wise-team/wise-hub/issues"
+  },
+  "homepage": "https://wise.vote/"
+}
