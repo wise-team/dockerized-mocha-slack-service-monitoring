@@ -179,12 +179,7 @@ async function sendSlackNotification(failures: [string, string][]) {
   const failuresListedText = failures.map(failure => {
     return "[[[ " + failure[0] + " ]]]: " + failure[1] + "\n";
   });
-  const slackText =
-    projectDescriptor +
-    " monitofing failed " +
-    mentions +
-    ": " +
-    failuresListedText;
+  const slackText = `${projectDescriptor} monitoring failed ${mentions}: ${failuresListedText}`;
   const slackMessage = { text: slackText };
   try {
     const response = await Axios.post(slackWebhookUrl + "", slackMessage);
