@@ -54,6 +54,11 @@ function logMonitoringFailed() {
     log({
         msg: projectDescriptor + " monitoring failed, slack notification sent",
         severity: "info",
+        monitoring_done: {
+            finished: true,
+            failed: true,
+            error: false,
+        },
     });
 }
 
@@ -62,9 +67,22 @@ function logMonitoringError(error: Error) {
         msg: `${projectDescriptor} monitoring error: ${error}`,
         error: error,
         severity: "error",
+        monitoring_done: {
+            finished: true,
+            failed: false,
+            error: true,
+        },
     });
 }
 
 function logMonitoringDone() {
-    log({ msg: projectDescriptor + " monitoring done", severity: "info" });
+    log({
+        msg: projectDescriptor + " monitoring done",
+        severity: "info",
+        monitoring_done: {
+            finished: true,
+            failed: false,
+            error: false,
+        },
+    });
 }
