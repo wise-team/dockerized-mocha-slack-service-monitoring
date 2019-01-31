@@ -6,7 +6,6 @@ Simple service monitoring tool that runs mocha tests and reports to slack. Run w
 
 ```bash
 
-$ ./build.sh
 $ docker run --rm \
     --name "hub-production-monitoring" \
     -e "SLACK_WEBHOOK_URL=https://hooks.slack.com/services/..." \
