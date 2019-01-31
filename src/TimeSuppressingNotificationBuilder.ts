@@ -18,12 +18,21 @@ export class TimeSupressingNotificationBuilder {
     public generateNotificationsAndUpdateSupresses(testResults: MochaTestRunner.SingleTestResult[]): string[] {
         const stillSupressedFailures: SupressedFailureTTL[] = this.loadSupressedFailureTTLs();
         const supressedTestTitles: string[] = stillSupressedFailures.map(failureTTLElem => failureTTLElem.test);
-        const { newSupressedTestTitles, notifications } = this.processTests(testResults, supressedTestTitles);
+        const { newSupressedTestTitles, unsupressTestTitles, notifications } = this.processTests(
+            testResults,
+            supressedTestTitles
+        );
 
         const newSupressedFailures: SupressedFailureTTL[] = newSupressedTestTitles.map(testTitle =>
             this.generateSupressionTTL(testTitle)
         );
-        const supressedFailuresToSave = [...stillSupressedFailures, ...newSupressedFailures];
+
+        const stillSupressedFailuresFiltered = stillSupressedFailures.filter(failureTTLEntry => {
+            const wasUnsupressed = unsupressTestTitles.indexOf(failureTTLEntry.test) >= 0;
+            return !wasUnsupressed;
+        });
+
+        const supressedFailuresToSave = [...stillSupressedFailuresFiltered, ...newSupressedFailures];
         this.saveSupresedFailureTTLs(supressedFailuresToSave);
 
         return notifications;
@@ -32,11 +41,17 @@ export class TimeSupressingNotificationBuilder {
     private processTests(
         testResults: MochaTestRunner.SingleTestResult[],
         supressedTestTitles: string[]
-    ): { newSupressedTestTitles: string[]; notifications: string[] } {
+    ): { newSupressedTestTitles: string[]; notifications: string[]; unsupressTestTitles: string[] } {
         const notifications: string[] = [];
+
         const newSupressedTestTitles: string[] = [];
         function supress(testTitle: string) {
             newSupressedTestTitles.push(testTitle);
+        }
+
+        const unsupressTestTitles: string[] = [];
+        function unsupress(testTitle: string) {
+            unsupressTestTitles.push(testTitle);
         }
 
         for (const singleTestResult of testResults) {
@@ -48,12 +63,14 @@ export class TimeSupressingNotificationBuilder {
                 supress(singleTestResult.name);
             } else if (testPassed && testSupressed) {
                 notifications.push(this.generateMonitorUpNotification(singleTestResult));
+                unsupress(singleTestResult.name);
             }
         }
 
         return {
             newSupressedTestTitles,
             notifications,
+            unsupressTestTitles,
         };
     }
 
