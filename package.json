@@ -1,6 +1,6 @@
 {
   "name": "dockerized-mocha-slack-service-monitoring",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Simple service monitoring tool that runs mocha tests and reports to slack. Run with docker container.",
   "engines": {
     "node": ">=10.15"
