@@ -29,6 +29,7 @@ const notificationBuilder = new TimeSupressingNotificationBuilder({ databaseFile
 
 (async () => {
     try {
+        logMonitoringStart();
         const testResults = await testRunner.runTests();
         const notifications = notificationBuilder.generateNotificationsAndUpdateSupresses(testResults);
 
@@ -48,6 +49,14 @@ async function notify(notifications: string[]) {
 
     const slackMsg = notificationsWithMetadata.join("\n");
     await slackNotifier.sendSlackNotification(slackMsg);
+}
+
+function logMonitoringStart() {
+    log({
+        msg: projectDescriptor + " monitoring started",
+        severity: "info",
+        monitoring_started: {},
+    });
 }
 
 function logMonitoringFailed() {

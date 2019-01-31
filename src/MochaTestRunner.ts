@@ -44,7 +44,7 @@ export class MochaTestRunner {
         runner.on("pass", test => {
             const singleTestResult: MochaTestRunner.SingleTestResult = {
                 name: this.getTestTitle(test),
-                passed: false,
+                passed: true,
                 msg: "",
             };
             result.push(singleTestResult);
@@ -86,7 +86,3 @@ export namespace MochaTestRunner {
             .map(fName => path.resolve(dir, fName));
     }
 }
-
-/* TODO remove this old code
- 
- */
