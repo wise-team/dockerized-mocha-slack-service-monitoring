@@ -1,6 +1,7 @@
 import ow from "ow";
 import * as fs from "fs";
 import * as path from "path";
+import * as Mocha from "mocha";
 
 import { log } from "./log";
 
