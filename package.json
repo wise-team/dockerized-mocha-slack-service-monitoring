@@ -37,7 +37,7 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wise-team/wise-hub/issues"
+    "url": "https://github.com/wise-team/dockerized-mocha-slack-service-monitoring/issues"
   },
   "homepage": "https://wise.vote/"
 }
