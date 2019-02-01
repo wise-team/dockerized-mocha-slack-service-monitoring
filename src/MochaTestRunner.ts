@@ -85,4 +85,8 @@ export namespace MochaTestRunner {
             .filter(fName => fName.endsWith(".spec.ts") || fName.endsWith(".spec.js"))
             .map(fName => path.resolve(dir, fName));
     }
+
+    export function getFailedTests(results: SingleTestResult[]): SingleTestResult[] {
+        return results.filter(singleTestResult => singleTestResult.passed == false);
+    }
 }

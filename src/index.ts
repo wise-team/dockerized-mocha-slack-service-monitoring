@@ -31,11 +31,12 @@ const notificationBuilder = new TimeSupressingNotificationBuilder({ databaseFile
     try {
         logMonitoringStart();
         const testResults = await testRunner.runTests();
+        const numOfFailures = MochaTestRunner.getFailedTests(testResults).length;
         const notifications = notificationBuilder.generateNotificationsAndUpdateSupresses(testResults);
 
         if (notifications.length > 0) {
-            await notify(notifications);
-            logMonitoringFailed();
+            await notify(notifications, numOfFailures);
+            logMonitoringFailed(numOfFailures);
         }
         logMonitoringDone();
     } catch (error) {
@@ -44,10 +45,10 @@ const notificationBuilder = new TimeSupressingNotificationBuilder({ databaseFile
     process.exit(0);
 })();
 
-async function notify(notifications: string[]) {
+async function notify(notifications: string[], numOfFailures: number) {
     const notificationsWithMetadata = notifications.map(msg => `${projectDescriptor} ${msg}`);
 
-    const slackMsg = notificationsWithMetadata.join("\n");
+    const slackMsg = notificationsWithMetadata.join("\n") + `  ~~ ${numOfFailures} failing tests`;
     await slackNotifier.sendSlackNotification(slackMsg);
 }
 
@@ -59,11 +60,12 @@ function logMonitoringStart() {
     });
 }
 
-function logMonitoringFailed() {
+function logMonitoringFailed(numOfFailures: number) {
     log({
-        msg: projectDescriptor + " monitoring failed, slack notification sent",
+        msg: `${projectDescriptor} monitoring failed (${numOfFailures} failing tests), slack notification sent`,
         severity: "info",
         monitoring_done: {
+            failures: numOfFailures,
             finished: true,
             failed: true,
             error: false,
