@@ -1,5 +1,7 @@
 # dockerized-mocha-slack-service-monitoring
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/wise-team/dockerized-mocha-slack-service-monitoring.svg)](https://greenkeeper.io/)
+
 Simple service monitoring tool that runs mocha tests and reports to slack. Run with docker-container
 
 ### Running
