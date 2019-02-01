@@ -14,15 +14,15 @@
   "dependencies": {
     "axios": "^0.18.0",
     "lodash": "^4.17.11",
-    "ow": "^0.8.0"
+    "ow": "^0.12.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.120",
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.12.21",
     "mocha": "^5.2.0",
-    "ts-node": "^6.2.0",
-    "typescript": "^2.9.2"
+    "ts-node": "^8.0.2",
+    "typescript": "^3.3.1"
   },
   "repository": {
     "type": "git",
