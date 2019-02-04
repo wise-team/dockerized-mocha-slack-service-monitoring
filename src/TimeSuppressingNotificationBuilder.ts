@@ -17,6 +17,24 @@ export class TimeSupressingNotificationBuilder {
 
     public generateNotificationsAndUpdateSupresses(testResults: MochaTestRunner.SingleTestResult[]): string[] {
         const stillSupressedFailures: SupressedFailureTTL[] = this.loadSupressedFailureTTLs();
+
+        const thereWereFailedTestsBefore = stillSupressedFailures.length > 0;
+        const thereAreNoFailingTestsNow = testResults.length === 0;
+        if (thereWereFailedTestsBefore && thereAreNoFailingTestsNow) {
+            return this.informOfAllTestClearance();
+        } else {
+            return this.informOfNewFailuresAndClearances(testResults, stillSupressedFailures);
+        }
+    }
+
+    private informOfAllTestClearance(): string[] {
+        return ["All tests pass"];
+    }
+
+    private informOfNewFailuresAndClearances(
+        testResults: MochaTestRunner.SingleTestResult[],
+        stillSupressedFailures: SupressedFailureTTL[]
+    ): string[] {
         const supressedTestTitles: string[] = stillSupressedFailures.map(failureTTLElem => failureTTLElem.test);
         const { newSupressedTestTitles, unsupressTestTitles, notifications } = this.processTests(
             testResults,
